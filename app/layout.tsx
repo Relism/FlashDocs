@@ -1,6 +1,16 @@
 import { Inter } from 'next/font/google';
+import type { Metadata } from 'next';
 import { Provider } from '@/components/provider';
+import { appName, siteUrl } from '@/lib/shared';
 import './global.css';
+
+export const metadata: Metadata = {
+  metadataBase: new URL(siteUrl),
+  title: {
+    template: `%s | ${appName}`,
+    default: appName,
+  },
+};
 
 const inter = Inter({
   subsets: ['latin'],

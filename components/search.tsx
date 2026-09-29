@@ -19,6 +19,8 @@ export default function DefaultSearchDialog(props: SharedProps) {
   const { search, setSearch, query } = useDocsSearch({
     client: staticClient({
       locale,
+      // The index is a static file under the base path, not an API the server answers.
+      from: `${process.env.NEXT_PUBLIC_BASE_PATH ?? ''}/api/search`,
     }),
   });
 
