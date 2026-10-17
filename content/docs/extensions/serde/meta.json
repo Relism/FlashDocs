@@ -1,0 +1,9 @@
+{
+  "title": "Serialization",
+  "description": "Bodies in, values out",
+  "pages": [
+    "index",
+    "jackson",
+    "avaje-jsonb"
+  ]
+}

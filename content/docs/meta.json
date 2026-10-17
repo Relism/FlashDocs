@@ -1,3 +1,7 @@
 {
-  "pages": ["index", "framework", "extensions"]
+  "pages": [
+    "index",
+    "framework",
+    "extensions"
+  ]
 }

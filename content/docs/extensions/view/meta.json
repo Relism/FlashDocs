@@ -1,0 +1,9 @@
+{
+  "title": "Views",
+  "description": "Server-rendered templates",
+  "pages": [
+    "index",
+    "jte",
+    "thymeleaf"
+  ]
+}

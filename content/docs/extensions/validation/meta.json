@@ -1,0 +1,9 @@
+{
+  "title": "Validation",
+  "description": "Checking a body before a handler sees it",
+  "pages": [
+    "index",
+    "jakarta",
+    "avaje"
+  ]
+}

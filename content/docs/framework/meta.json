@@ -1,5 +1,28 @@
 {
   "title": "Framework",
-  "description": "The flash core",
-  "root": true
+  "description": "The core library",
+  "root": true,
+  "pages": [
+    "index",
+    "installation",
+    "quickstart",
+    "---The app---",
+    "app",
+    "routing",
+    "middleware",
+    "errors",
+    "---Messages---",
+    "request",
+    "response",
+    "websockets",
+    "static-files",
+    "---The server---",
+    "configuration",
+    "tls",
+    "http2",
+    "---Practice---",
+    "performance",
+    "testing",
+    "patterns"
+  ]
 }

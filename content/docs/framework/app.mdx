@@ -1,0 +1,115 @@
+---
+title: The app
+description: Services, modules, start and stop
+---
+
+An `App` is a plain value: routes, middleware, and the services they need. Building one costs
+nothing and opens no port.
+
+```java
+static App api(DataSource db) {
+    return App.create()
+            .add(UserService.class)
+            .scan("com.example.api")
+            .get("/healthz", (req, res) -> "ok");
+}
+
+Server.start(api(db), ServerConfig.builder().port(8080).build());
+```
+
+Write it as a method like this and your tests get the real app, on a port of their own.
+
+## Services
+
+```java
+app.add(UserService.class);                  // Flash builds it
+app.add(Clock.class, SystemClock.class);     // an implementation behind an interface
+app.add(DataSource.class, hikariDataSource); // one you built yourself
+```
+
+Handlers and services both get what they need through their constructor:
+
+```java
+public final class UserService {
+
+    private final DataSource db;
+    private final Clock clock;
+
+    public UserService(DataSource db, Clock clock) {
+        this.db = db;
+        this.clock = clock;
+    }
+}
+```
+
+Flash reads the constructor parameters and finds each one:
+
+| Parameter | Means |
+|---|---|
+| `Clock` | Added exactly once. Zero or two of them stops the boot with a message naming both. |
+| `Optional<Clock>` | Use it if it was added, carry on if not. |
+| `List<Clock>` | Everything added under `Clock`, in the order it was added. |
+
+Order of registration never matters, and a cycle stops the boot with the path it found.
+
+`ServerConfig` is a service too, so anything can ask for it.
+
+## Modules
+
+A module is a bundle of routes and services you can install in one call. Extensions are modules
+shipped in a jar, and your own code can use the same shape.
+
+```java
+public final class Billing implements Module {
+
+    @Override
+    public void install(App app) {
+        app.add(InvoiceService.class).scan("com.example.billing");
+    }
+}
+```
+
+```java
+App.create()
+        .install(new JsonModule(), new Billing())
+        .get("/healthz", (req, res) -> "ok");
+```
+
+## Start and stop
+
+`Server.start` builds every service, compiles the routes, then opens the listeners.
+
+```java
+Server server = Server.start(app, config);
+
+server.port();  // useful when the config asked for port 0
+server.await(); // block until the server stops
+```
+
+Work that needs the services but has to run before the first request goes in `onStart`:
+
+```java
+app.onStart(services -> services.get(Migrations.class).run());
+```
+
+`stop()` waits for in-flight requests, then closes every service that implements `AutoCloseable`,
+in reverse order of creation.
+
+```java
+Runtime.getRuntime().addShutdownHook(new Thread(() -> server.stop().join()));
+```
+
+<Callout title="onInit">
+A handler can also override `onInit()`, which runs once at boot. Use it for work you do not want
+on the request path, like precomputing a template or a header.
+</Callout>
+
+## Tests
+
+`replace` swaps one binding for another, so a test can run the real app with a fake clock.
+
+```java
+App app = api(db).replace(Clock.class, fixedClock);
+```
+
+See [Testing](/docs/framework/testing).
