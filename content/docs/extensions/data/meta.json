@@ -1,0 +1,9 @@
+{
+  "title": "Data",
+  "description": "Transactions and repositories",
+  "pages": [
+    "index",
+    "jdbc",
+    "hibernate"
+  ]
+}

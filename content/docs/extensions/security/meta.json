@@ -1,0 +1,12 @@
+{
+  "title": "Security",
+  "description": "Authentication, authorization, sessions",
+  "pages": [
+    "index",
+    "oidc",
+    "apikey",
+    "form",
+    "oauth-server",
+    "testing"
+  ]
+}

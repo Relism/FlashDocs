@@ -1,0 +1,80 @@
+---
+title: Installation
+description: Repository and dependency
+---
+
+<Steps>
+
+<Step>
+
+### Add JitPack
+
+Public, no credentials.
+
+```xml title="pom.xml"
+<repositories>
+  <repository>
+    <id>jitpack.io</id>
+    <url>https://jitpack.io</url>
+  </repository>
+</repositories>
+```
+
+</Step>
+
+<Step>
+
+### Add the dependency
+
+```xml title="pom.xml"
+<properties>
+  <flash.version>3.0.4</flash.version>
+</properties>
+
+<dependencies>
+  <dependency>
+    <groupId>dev.relism.Flash</groupId>
+    <artifactId>flash</artifactId>
+    <version>${flash.version}</version>
+  </dependency>
+</dependencies>
+```
+
+Flash releases use the `dev.relism.Flash` group and the release tag without its `v` prefix.
+
+</Step>
+
+<Step>
+
+### Add a logger
+
+Flash logs through SLF4J and ships no binding. Without one it stays silent.
+
+```xml title="pom.xml"
+<dependency>
+  <groupId>org.slf4j</groupId>
+  <artifactId>slf4j-simple</artifactId>
+  <version>2.0.16</version>
+</dependency>
+```
+
+</Step>
+
+</Steps>
+
+## Extensions
+
+Same group, same version.
+
+```xml title="pom.xml"
+<dependency>
+  <groupId>dev.relism.Flash</groupId>
+  <artifactId>flash-ext-jackson-json</artifactId>
+  <version>${flash.version}</version>
+</dependency>
+```
+
+## Local builds
+
+To try unreleased changes, run `./mvnw install` in a Flash checkout and build with
+`-Dflash.groupId=dev.relism -Dflash.version=<the version in its pom.xml>`.

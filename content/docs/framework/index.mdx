@@ -1,6 +1,30 @@
 ---
 title: Introduction
-description: What Flash is and how an app is put together
+description: What Flash is
 ---
 
-To be written.
+Flash is a library, not a container. Your `main` stays yours.
+
+```java
+Server.start(App.create().get("/ping", (req, res) -> "pong"),
+        ServerConfig.builder().port(8080).build()).await();
+```
+
+An `App` holds routes, middleware and services. It has no port, so a test can run the same app on
+a port of its own. `Server.start` builds everything, then starts listening.
+
+## Requirements
+
+Java 21 or later, Maven 3.8 or later. No agent, no annotation processor.
+
+## What the core does
+
+Routing, request and response, WebSockets, TLS, static files, error pages, HTTP/2.
+
+JSON, validation, OpenAPI, security, databases, caching, templates and rate limits are
+[extensions](/docs/extensions). Each is a separate dependency you install into the app.
+
+<Cards>
+  <Card title="Installation" href="/docs/framework/installation" description="Repository and dependency" />
+  <Card title="Quickstart" href="/docs/framework/quickstart" description="A running server in one file" />
+</Cards>

@@ -1,6 +1,6 @@
 # FlashDocs
 
-Documentation for [Flash](https://git.pixel-services.com/Relism/Flash5), a Java web framework.
+Documentation for [Flash](https://github.com/Relism/Flash), a Java web framework.
 Built with [Fumadocs](https://fumadocs.dev) and published as a static site at
 <https://relism.github.io/FlashDocs>.
 

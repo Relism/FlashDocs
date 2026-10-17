@@ -1,5 +1,26 @@
 {
   "title": "Extensions",
   "description": "What you install into an app",
-  "root": true
+  "root": true,
+  "pages": [
+    "index",
+    "---Bodies---",
+    "serde",
+    "validation",
+    "---Describing the API---",
+    "openapi",
+    "mcp",
+    "---Security---",
+    "security",
+    "---Data---",
+    "data",
+    "cache",
+    "---Frontend---",
+    "view",
+    "vite",
+    "---Operations---",
+    "limiter",
+    "scheduler",
+    "routeviewer"
+  ]
 }

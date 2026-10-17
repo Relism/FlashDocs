@@ -1,0 +1,106 @@
+---
+title: Quickstart
+description: A running server in one file
+---
+
+<Steps>
+
+<Step>
+
+### Write it
+
+```java title="Main.java"
+import dev.relism.flash.App;
+import dev.relism.flash.Server;
+import dev.relism.flash.ServerConfig;
+
+public final class Main {
+
+    public static void main(String[] args) {
+        App app = App.create()
+                .get("/ping", (req, res) -> "pong")
+                .get("/users/{id}", (req, res) -> "user:" + req.param("id"))
+                .post("/echo", (req, res) -> res.status(200).body(req.body().bytes()));
+
+        Server.start(app, ServerConfig.builder().port(8080).build()).await();
+    }
+}
+```
+
+</Step>
+
+<Step>
+
+### Run it
+
+```bash
+mvn compile exec:java -Dexec.mainClass=Main
+```
+
+</Step>
+
+<Step>
+
+### Call it
+
+```bash
+curl localhost:8080/ping
+curl localhost:8080/users/42
+curl -d hello localhost:8080/echo
+```
+
+</Step>
+
+</Steps>
+
+## What a handler returns
+
+The return value becomes the body.
+
+| Returned | Result |
+|---|---|
+| `String` | Written as text |
+| `byte[]` | Written as it is |
+| `Response` | Replaces the whole response |
+| `null` | Whatever the handler already set on `res` |
+
+Returning your own object needs a codec. Install [a JSON module](/docs/extensions/serde) and it
+becomes a JSON body.
+
+## Handlers as classes
+
+A lambda is fine until the handler needs something. Then write a class: the annotation carries the
+path, and `scan` finds it.
+
+```java title="ListUsers.java"
+@GET("/users")
+public final class ListUsers implements Handler {
+
+    private final UserService users;
+
+    public ListUsers(UserService users) { this.users = users; }
+
+    @Override
+    public Object handle(Request req, Response res) {
+        return users.list();
+    }
+}
+```
+
+```java title="Main.java"
+App app = App.create()
+        .add(UserService.class)
+        .scan("com.example.api");
+```
+
+`add` registers the service, `scan` picks up every annotated handler in the package. Flash builds
+both. See [The app](/docs/framework/app).
+
+## Development mode
+
+```bash
+java -Dflash.env=dev -jar app.jar
+```
+
+Error pages show the stack trace, and a few mistakes that are silent in production fail loudly
+instead. See [Configuration](/docs/framework/configuration).

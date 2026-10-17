@@ -1,0 +1,9 @@
+{
+  "title": "Cache",
+  "description": "One caching contract, two backings",
+  "pages": [
+    "index",
+    "caffeine",
+    "redis"
+  ]
+}
